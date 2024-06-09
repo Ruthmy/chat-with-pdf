@@ -17,5 +17,9 @@
     "svelte": "^4.2.18",
     "tailwindcss": "^3.4.4",
     "typescript": "^5.4.5"
+  },
+  "devDependencies": {
+    "flowbite": "^2.3.0",
+    "flowbite-svelte": "^0.46.1"
   }
 }
