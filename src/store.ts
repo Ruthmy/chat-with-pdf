@@ -12,3 +12,7 @@ export const appStatus = writable(APP_STATUS.INIT);
 export const setAppStatusLoading = () => {
   appStatus.set(APP_STATUS.LOADING);
 }
+
+export const setAppStatusError = () => {
+  appStatus.set(APP_STATUS.ERROR);
+}
