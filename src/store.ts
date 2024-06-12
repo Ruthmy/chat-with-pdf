@@ -16,3 +16,7 @@ export const setAppStatusLoading = () => {
 export const setAppStatusError = () => {
   appStatus.set(APP_STATUS.ERROR);
 }
+
+export const setAppStatusChatMode = (response: any) => {
+  appStatus.set(APP_STATUS.CHAT_MODE);
+}
