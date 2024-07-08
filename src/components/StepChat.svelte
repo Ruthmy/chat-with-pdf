@@ -1,6 +1,6 @@
 <script>
   import { Input, Label, Spinner } from "flowbite-svelte";
-  import { appStatusInfo, setAppStatusError } from "../store";
+  import { appStatusInfo, setAppStatusError, setAppStatusQuota  } from "../store";
   const { id, url, pages } = $appStatusInfo;
 
   let answer = "";
@@ -46,6 +46,18 @@
 
         if (incomingData === "__END__") {
           eventSource.close();
+          return;
+        }
+
+        if (incomingData === "__ERROR__") {
+          eventSource.close();
+          setAppStatusError();
+          return;
+        }
+
+        if (incomingData === "__QUOTA__") {
+          eventSource.close();
+          setAppStatusQuota();
           return;
         }
 
