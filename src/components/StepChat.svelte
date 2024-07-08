@@ -7,7 +7,14 @@
   let loading = false;
 
   // This is just a mockup of the images that will be shown
-  const numOfImagesToShow = Math.min(pages.length, 4);
+  let pagesLength;
+  if (pages <= 4) {
+    pagesLength = pages;
+  } else {
+    pagesLength = 4;
+  }
+
+  const numOfImagesToShow = Math.min(pages, pagesLength);
   const images = Array.from({ length: numOfImagesToShow }, (_, i) => {
     const page = i + 1;
     return url
@@ -22,16 +29,17 @@
 
     const question = event.target.question.value;
 
+    const searchParams = new URLSearchParams();
+    searchParams.append("id", id);
+    searchParams.append("question", question);
+
+    console.log(searchParams.toString());
+
     try {
-      const res = await fetch("/api/ask", {
-        method: "POST",
+      const res = await fetch(`/api/ask?${searchParams.toString()}`, {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          id,
-          question,
-        }),
       });
 
       if (!res.ok) {
@@ -39,15 +47,16 @@
         console.error("Failed to ask question");
         return;
       }
+
+      const { response } = await res.json();
+      answer = response;
+
     } catch (error) {
       setAppStatusError();
     } finally {
       loading = false;
     }
 
-    const { answer: apiAnswer } = await res.json();
-    answer = apiAnswer;
-    loading = false;
   };
 </script>
 
@@ -68,7 +77,7 @@
 </form>
 
 {#if loading}
-  <div class="flex justify-center items-center flex-col gap-y-2">
+  <div class="mt-10 flex justify-center items-center flex-col gap-y-2">
     <Spinner class="w-8 h-8"></Spinner>
     <p>Waiting for answer...</p>
   </div>
