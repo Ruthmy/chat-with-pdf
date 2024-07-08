@@ -15,6 +15,11 @@
     <span class="font-medium">Something happend!</span>
     Change a few things up and try submitting again.
   </Alert>
+{:else if $appStatus === APP_STATUS.QUOTA}
+  <Alert>
+    <span class="font-medium">Quota reached!</span>
+    You have reached the maximum number of questions for this session.
+  </Alert>
 {:else if $appStatus === APP_STATUS.CHAT_MODE}
   <p>Chat mode activate!</p>
   <StepChat />
