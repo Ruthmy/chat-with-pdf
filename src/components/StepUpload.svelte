@@ -22,7 +22,7 @@
       const formData = new FormData();
       formData.append("file", acceptedFiles[0]);
 
-      const res = await fetch("api/upload", {
+      const res = await fetch("/api/upload", {
         method: "POST",
         body: formData,
       });
