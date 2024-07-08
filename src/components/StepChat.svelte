@@ -26,7 +26,7 @@
     event.preventDefault();
 
     loading = true;
-
+    answer = "";
     const question = event.target.question.value;
 
     const searchParams = new URLSearchParams();
@@ -36,27 +36,26 @@
     console.log(searchParams.toString());
 
     try {
-      const res = await fetch(`/api/ask?${searchParams.toString()}`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const eventSource = new EventSource(
+        `/api/ask?${searchParams.toString()}`
+      );
 
-      if (!res.ok) {
+      eventSource.onmessage = (event) => {
         loading = false;
-        console.error("Failed to ask question");
-        return;
-      }
+        const incomingData = JSON.parse(event.data);
 
-      const { response } = await res.json();
-      answer = response;
+        if (incomingData === "__END__") {
+          eventSource.close();
+          return;
+        }
 
+        answer += incomingData;
+      };
     } catch (error) {
       setAppStatusError();
     } finally {
       loading = false;
     }
-
   };
 </script>
 
