@@ -47,6 +47,12 @@ export const GET: APIRoute = async ({ request }) => {
       sendEvent('__END__')
     } catch (error) {
       console.log(error)
+      // enviar error al cliente
+      if (error.status === 429) {
+        sendEvent('__QUOTA__')
+        return
+      }
+      sendEvent('__ERROR__')
     }
   })
 };
